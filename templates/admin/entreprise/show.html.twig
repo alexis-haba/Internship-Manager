@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de l'entreprise{% endblock %}
+
+{% block content %}
+    <h2>{{ entreprise.nom }}</h2>
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Secteur :</strong> {{ entreprise.secteur }}</p>
+            <p><strong>Contact :</strong> {{ entreprise.contact }}</p>
+            <h3>Offres associées</h3>
+            <ul class="list-group">
+                {% for offre in entreprise.offres %}
+                    <li class="list-group-item">
+                        {{ offre.titre }} 
+                        <span class="badge bg-{{ offre.validee ? 'success' : 'warning' }}">{{ offre.validee ? 'Validée' : 'En attente' }}</span>
+                    </li>
+                {% else %}
+                    <li class="list-group-item">Aucune offre associée.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <a href="{{ path('admin_entreprise_index') }}" class="btn btn-secondary mt-3">Retour</a>
+{% endblock %}

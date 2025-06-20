@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Offres de Stage{% endblock %}
+
+{% block body %}
+    <div class="container-fluid mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0 text-primary">Gestion des Offres de Stage</h1>
+            <a href="{{ path('admin_offre_new') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Ajouter une offre
+            </a>
+        </div>
+
+        {% if offres|length > 0 %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Titre</th>
+                            <th>Entreprise</th>
+                            <th>Validée</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for offre in offres %}
+                            <tr>
+                                <td>{{ offre.titre }}</td>
+                                <td>{{ offre.entreprise.nom }}</td>
+                                <td>{{ offre.validee ? '<span class="badge bg-success">Oui</span>' : '<span class="badge bg-warning">Non</span>'|raw }}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ path('admin_offre_edit', {'id': offre.id}) }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit"></i> Modifier
+                                        </a>
+                                        <form action="{{ path('admin_offre_delete', {'id': offre.id}) }}" method="post" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr ?')">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ offre.id) }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i> Supprimer
+                                            </button>
+                                        </form>
+                                        {% if not offre.validee %}
+                                            <form action="{{ path('admin_offre_validate', {'id': offre.id}) }}" method="post" style="display:inline;">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('validate' ~ offre.id) }}">
+                                                <button type="submit" class="btn btn-sm btn-success">
+                                                    <i class="fas fa-check"></i> Valider
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                <i class="fas fa-exclamation-triangle"></i> Aucune offre de stage disponible.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

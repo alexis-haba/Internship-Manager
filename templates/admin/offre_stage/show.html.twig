@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de l'Offre{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Détail de l'Offre</h1>
+        <p><strong>Titre:</strong> {{ offre.titre }}</p>
+        <p><strong>Description:</strong> {{ offre.description }}</p>
+        <p><strong>Entreprise:</strong> {{ offre.entreprise.nom }}</p>
+        <p><strong>Validée:</strong> {{ offre.validee ? 'Oui' : 'Non' }}</p>
+        {% if app.user and not offre.validee %}
+            <form action="{{ path('candidature_postuler', {'id': offre.id}) }}" method="post" style="display:inline;">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('candidature_postuler') }}">
+                <button type="submit" class="btn btn-success">Postuler</button>
+            </form>
+        {% endif %}
+        <a href="{{ path('app_home') }}" class="btn btn-secondary mt-2">Retour</a>
+    </div>
+{% endblock %}

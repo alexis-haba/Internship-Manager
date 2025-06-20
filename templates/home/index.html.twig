@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - Internship Manager{% endblock %}
+
+{% block body %}
+    <h1>Offres de stage disponibles</h1>
+    {% if offres|length > 0 %}
+        <ul>
+            {% for offre in offres %}
+                <li>
+                    <h2>{{ offre.titre }}</h2>
+                    <p>{{ offre.description }}</p>
+                    <p>Entreprise: {{ offre.entreprise.nom }}</p>
+                    {% if is_granted('ROLE_USER') %}
+                        <a href="{{ path('candidature_postuler', {'id': offre.id}) }}">Postuler</a> <!-- Correction ici -->
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucune offre de stage disponible pour le moment.</p>
+    {% endif %}
+    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+        <p><a href="{{ path('login') }}">Connectez-vous</a> ou <a href="{{ path('register') }}">inscrivez-vous</a> pour postuler.</p>
+    {% endif %}
+{% endblock %}

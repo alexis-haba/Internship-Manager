@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Valider la candidature{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="h3 mb-4 text-primary">Validation de la candidature</h1>
+        <p>Êtes-vous sûr de vouloir valider la candidature pour l'offre "{{ candidature.offre.titre }}" soumise par {{ candidature.user.email }} ?</p>
+        <form method="post" action="{{ path('candidature_validate', {'id': candidature.id}) }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('validate' ~ candidature.id) }}">
+            <button type="submit" class="btn btn-success">Valider</button>
+            <a href="{{ path('admin_candidatures') }}" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+{% endblock %}

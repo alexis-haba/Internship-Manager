@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Postuler - {{ offre.titre }}{% endblock %}
+
+{% block body %}
+    <h1>Postuler à l'offre : {{ offre.titre }}</h1>
+    <p>Description : {{ offre.description }}</p>
+    <p>Entreprise : {{ offre.entreprise.nom }}</p>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Soumettre ma candidature</button>
+    {{ form_end(form) }}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+{% endblock %}

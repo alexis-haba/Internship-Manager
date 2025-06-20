@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'Offre{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Modifier l'Offre de Stage</h1>
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="btn btn-primary">Mettre à jour</button>
+        {{ form_end(form) }}
+        <a href="{{ path('admin_offre_index') }}">Retour à la liste</a>
+    </div>
+{% endblock %}

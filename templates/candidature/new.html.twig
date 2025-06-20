@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Postuler à une offre{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2>Postuler à "{{ offre.titre }}"</h2>
+        {% if app.user %}
+            <form method="post" action="{{ path('candidature_new', {'id': offre.id}) }}" enctype="multipart/form-data" class="col-md-6">
+                <div class="mb-3">
+                    <label for="candidature_cvFile" class="form-label">CV (PDF uniquement, max 2 Mo)</label>
+                    <input type="file" id="candidature_cvFile" name="candidature[cvFile]" class="form-control" accept="application/pdf" required>
+                    {{ form_errors(form.cvFile) }}
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('candidature_new') }}">
+                <button type="submit" class="btn btn-primary">Envoyer la candidature</button>
+                <a href="{{ path('app_home') }}" class="btn btn-secondary">Retour</a>
+            </form>
+        {% else %}
+            <div class="alert alert-warning">
+                Vous devez être connecté pour postuler à une offre. <a href="{{ path('login') }}" class="alert-link">Se connecter</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

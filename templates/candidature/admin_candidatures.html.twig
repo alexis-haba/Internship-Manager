@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Candidatures{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h3 mb-0 text-primary">Gestion des Candidatures</h1>
+        </div>
+
+        {% if candidatures|length > 0 %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>Utilisateur</th>
+                            <th>Offre</th>
+                            <th>Date</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for candidature in candidatures %}
+                            <tr>
+                                <td>{{ candidature.user.email }}</td>
+                                <td>{{ candidature.offre.titre }}</td>
+                                <td>{{ candidature.createdAt ? candidature.createdAt|date('Y-m-d H:i') : 'Non définie' }}</td>
+                                <td>{{ candidature.statut }}</td>
+                                <td>
+                                    <form action="{{ path('admin_candidatures') }}" method="post" style="display:inline;">
+                                        <input type="hidden" name="candidature_id" value="{{ candidature.id }}">
+                                        <select name="status" class="form-select form-select-sm" style="width: auto; display: inline;">
+                                            <option value="en_attente" {% if candidature.statut == 'en_attente' %}selected{% endif %}>En attente</option>
+                                            <option value="validee" {% if candidature.statut == 'validee' %}selected{% endif %}>Validée</option>
+                                            <option value="rejetee" {% if candidature.statut == 'rejetee' %}selected{% endif %}>Rejetée</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-sm btn-primary">Mettre à jour</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                <i class="fas fa-exclamation-triangle"></i> Aucune candidature disponible.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

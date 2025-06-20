@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Candidatures{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Mes Candidatures</h1>
+        {% if candidatures|length > 0 %}
+            <ul>
+                {% for candidature in candidatures %}
+                    <li>
+                        <h2>{{ candidature.offre.titre }}</h2>
+                        <p>Entreprise: {{ candidature.offre.entreprise.nom }}</p>
+                        <p>Date de soumission: {{ candidature.createdAt|date('Y-m-d H:i:s') }}</p>
+                        {% if candidature.cvFileName %}
+                            <p>CV: <a href="{{ asset('uploads/cvs/' ~ candidature.cvFileName) }}">Télécharger</a></p>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Vous n'avez aucune candidature pour le moment.</p>
+            <p><a href="{{ path('app_home') }}">Consultez les offres disponibles</a></p>
+        {% endif %}
+    </div>
+{% endblock %}

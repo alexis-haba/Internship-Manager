@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes candidatures - Internship Manager{% endblock %}
+
+{% block body %}
+    <h1>Mes candidatures</h1>
+    {% if candidatures|length > 0 %}
+        <ul class="list-group">
+            {% for candidature in candidatures %}
+                <li class="list-group-item mb-3 shadow-sm">
+                    <p><strong>Offre :</strong> {{ candidature.offre.titre }}</p>
+                    <p><strong>Date :</strong> {{ candidature.createdAt ? candidature.createdAt|date('Y-m-d H:i') : 'Non définie' }}</p>
+                    <p><strong>Statut :</strong> 
+                        {% if candidature.statut == 'en_attente' %}
+                            <span class="badge bg-warning">En attente</span>
+                        {% elseif candidature.statut == 'validee' %}
+                            <span class="badge bg-success">Validée</span>
+                        {% else %}
+                            <span class="badge bg-danger">Rejetée</span>
+                        {% endif %}
+                    </p>
+                    {% if candidature.cvFileName %}
+                        <a href="{{ asset('uploads/cv_files/' ~ candidature.cvFileName) }}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-download"></i> Télécharger CV
+                        </a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="content-text">Aucune candidature pour le moment.</p>
+    {% endif %}
+{% endblock %}
